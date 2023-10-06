@@ -29,6 +29,10 @@ export class CRUD{
         return this.#data[id];
     }
 
+    readAll(){
+        return this.#data;
+    }
+
 	update(id, data){}
 
 	delete(id){}
