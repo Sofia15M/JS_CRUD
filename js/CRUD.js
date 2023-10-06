@@ -33,7 +33,10 @@ export class CRUD{
         return this.#data;
     }
 
-	update(id, data){}
+	update(id, data){
+        this.#data[id] = data;
+        return true;
+    }
 
 	delete(id){}
 }
