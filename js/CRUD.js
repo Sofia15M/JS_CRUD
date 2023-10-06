@@ -20,6 +20,25 @@ export class CRUD{
 		if(crudsofi == undefined) throw new Error("Table crudsofi required");
 	}
     
+    #save() {
+        let dataToSave = JSON.stringify(this.#data);
+        sessionStorage.setItem(this.#crudsofi, dataToSave);
+    }
+
+    #get(key){
+        let data = sessionStorage.getItem(key);
+        return JSON.parse(data);
+    }
+
+    #existElementWithId(id){
+        return this.#data[id] === undefined ? false : true;
+    }
+
+    #chackThatElementExitWithId (id){
+        if (!this.#existElementWithId(id))
+           throw new Error("this element not exists")
+    }
+
     create(data){
         this.#data.push(data);
         return this.#data.length;
@@ -38,5 +57,8 @@ export class CRUD{
         return true;
     }
 
-	delete(id){}
+	delete(id){
+       this.#data.splice(id,1);
+       return true; 
+    }
 }
