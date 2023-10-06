@@ -25,7 +25,9 @@ export class CRUD{
         return this.#data.length;
     }
 
-	read(id){}
+	read(id){
+        return this.#data[id];
+    }
 
 	update(id, data){}
 
