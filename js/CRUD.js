@@ -1,28 +1,29 @@
 export class CRUD{
-	#crudsofi = null;
+	#tableName = null;
     #data = null;
   
-	constructor(crudsofi){
- 		this.#setcrudsofi(crudsofi);
+	constructor(tableName = undefined){
+ 		this.#setcrudsofi(tableName);
       	this.#setData();
   	}
 
-	#setcrudsofi(crudsofi){
-		this.#crudsofiValidate(crudsofi);
-        this.#crudsofi = crudsofi;
+	#setcrudsofi(tableName){
+		this.#tableNameValidate(tableName);
+        this.#tableName = tableName;
 	}
     
     #setData(){
-    	this.#data = [];
+        let dataRepository = this.#get(this.#tableName)
+    	this.#data = dataRepository === null ? [] : dataRepository;
 	}
     
-    #crudsofiValidate(crudsofi){
-		if(crudsofi == undefined) throw new Error("Table crudsofi required");
+    #tableNameValidate(tableName){
+		if(tableName === undefined) throw new Error("Table Name required");
 	}
     
     #save() {
         let dataToSave = JSON.stringify(this.#data);
-        sessionStorage.setItem(this.#crudsofi, dataToSave);
+        sessionStorage.setItem(this.#tableName, dataToSave);
     }
 
     #get(key){
@@ -34,17 +35,19 @@ export class CRUD{
         return this.#data[id] === undefined ? false : true;
     }
 
-    #chackThatElementExitWithId (id){
+    #chackThatElementExitsWithId (id){
         if (!this.#existElementWithId(id))
            throw new Error("this element not exists")
     }
 
     create(data){
         this.#data.push(data);
+        this.#save();
         return this.#data.length;
     }
 
 	read(id){
+        this.#chackThatElementExitsWithId(id);
         return this.#data[id];
     }
 
@@ -53,12 +56,17 @@ export class CRUD{
     }
 
 	update(id, data){
+        this.#chackThatElementExitsWithId(id);
         this.#data[id] = data;
+        this.save();
         return true;
     }
 
 	delete(id){
+        this.#chackThatElementExitsWithId(id);
        this.#data.splice(id,1);
+       this.#save();
        return true; 
     }
+
 }
